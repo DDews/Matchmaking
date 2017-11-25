@@ -20,7 +20,7 @@ class Server
     {
         this.port = 8080;
         this.ip = "localhost";
-        cleanRooms();
+        this.cleanRooms();
         this.start();
     }
 
