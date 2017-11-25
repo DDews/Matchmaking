@@ -13,6 +13,7 @@ var rooms = jsonFile.readFile(file,function (err, obj) {
 class Server
 {
     cleanRooms() {
+      if (typeof rooms == "undefined") rooms = {};
       var time = +new Date();
       for (var room in rooms) {
         if (time - rooms[room].heartbeaet > TIMEOUT) delete rooms[room];
