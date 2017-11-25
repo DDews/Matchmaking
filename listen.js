@@ -113,7 +113,7 @@ class Server
         {
             server.cleanRooms();
             // Tell Unity that the HTTP method was not allowed
-            res.writeHead(405, "Method Not Allowed", {"Content-Type": "text/html"});
+            res.writeHead(200, {"Content-Type": "text/plain"});
             var out = [];
             for (var room in rooms) {
               out.push(rooms[room]);
