@@ -3,6 +3,7 @@
 const TIMEOUT = 60 * 1000; // 60 seconds
 var http = require("http");
 const file = "rooms.json";
+var myip = require('quick-local-ip');
 var jsonFile = require("jsonfile");
 var rooms = jsonFile.readFile(file,function (err) {
   if (err) console.log(err);
@@ -19,7 +20,7 @@ class Server
     constructor()
     {
         this.port = 8080;
-        this.ip = "localhost";
+        this.ip = myip.getLocalIP4();
         this.cleanRooms();
         this.start();
     }
