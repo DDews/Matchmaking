@@ -2,7 +2,7 @@
 
 const TIMEOUT = 60 * 1000; // 60 seconds
 var http = require("http");
-var file = "rooms.json";
+const file = "rooms.json";
 var jsonFile = require("jsonfile");
 var rooms = jsonFile.readFile(file,function (err) {
   if (err) console.log(err);
