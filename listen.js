@@ -74,7 +74,6 @@ class Server
             });
             req.on("end", () =>
             {
-                console.log("pathName: " + pathName);
                 console.log("Received data: " + body);
                 // Split the key / pair values and print them out
                 var obj = {};
@@ -89,7 +88,7 @@ class Server
                       console.log(key + ":" + val);
                     }
                 }
-                if (pathName == "/heartbeat") {
+                if (pathName == "./heartbeat") {
                   console.log("received heartbeat for room " + obj.roomName);
                   if (obj.roomName in rooms) {
                     rooms[obj.roomName].heartbeat = +new Date();
