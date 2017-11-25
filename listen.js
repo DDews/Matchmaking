@@ -1,6 +1,6 @@
 "use strict";
 
-const TIMEOUT = 60 * 1000; // 60 seconds
+const TIMEOUT = 30 * 1000; // 30 seconds
 var http = require("http");
 const file = "rooms.json";
 var url = require("url");
