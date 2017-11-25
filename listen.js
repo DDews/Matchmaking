@@ -74,6 +74,7 @@ class Server
             });
             req.on("end", () =>
             {
+                console.log("pathName: " + pathName);
                 console.log("Received data: " + body);
                 // Split the key / pair values and print them out
                 var obj = {};
