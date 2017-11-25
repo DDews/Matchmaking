@@ -6,8 +6,8 @@ const file = "rooms.json";
 var url = require("url");
 var myip = require('quick-local-ip');
 var jsonFile = require("jsonfile");
-var rooms = jsonFile.readFile(file,function (err) {
-  if (err) console.log(err);
+var rooms = jsonFile.readFile(file,function (err, obj) {
+  console.dir(obj);
 });
 
 class Server
