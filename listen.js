@@ -16,7 +16,7 @@ class Server
       if (typeof rooms == "undefined") rooms = {};
       var time = +new Date();
       for (var room in rooms) {
-        if (time - rooms[room].heartbeaet > TIMEOUT) delete rooms[room];
+        if (time - rooms[room].heartbeat > TIMEOUT) delete rooms[room];
       }
       jsonFile.writeFile(file,rooms,function (err) {
         if (err) console.log(err);
