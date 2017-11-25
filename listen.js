@@ -46,6 +46,7 @@ class Server
 
     processRequest(req, res)
     {
+        var server = this;
         // Process the request from the client
         // We are only supporting POST
         if (req.method === "POST")
@@ -65,7 +66,7 @@ class Server
             });
             req.on("end", () =>
             {
-                cleanRooms();
+                server.cleanRooms();
                 // Now that we have all data from the client, we process it
                 console.log("Received data: " + body);
                 // Split the key / pair values and print them out
@@ -87,7 +88,7 @@ class Server
         }
         else
         {
-            cleanRooms();
+            server.cleanRooms();
             // Tell Unity that the HTTP method was not allowed
             res.writeHead(405, "Method Not Allowed", {"Content-Type": "text/html"});
             var out = [];
