@@ -17,6 +17,9 @@ class Server
       for (var room in rooms) {
         if (time - rooms[room].heartbeaet > TIMEOUT) delete rooms[room];
       }
+      jsonFile.writeFile(file,rooms,function (err) {
+        if (err) console.log(err);
+      });
     }
     constructor()
     {
@@ -70,6 +73,18 @@ class Server
             });
             req.on("end", () =>
             {
+                console.log("Received data: " + body);
+                // Split the key / pair values and print them out
+                var obj = {};
+                var vars = body.split("&");
+                for (var t = 0; t < vars.length; t++)
+                {
+                    var pair = vars[t].split("=");
+                    var key = decodeURIComponent(pair[0]);
+                    var val = decodeURIComponent(pair[1]);
+                    obj[key] = val;
+                    console.log(key + ":" + val);
+                }
                 if (pathName == "/heartbeat") {
                   console.log("received heartbeat for room " + obj.roomName);
                   if (obj.roomName in rooms) {
@@ -78,23 +93,19 @@ class Server
                 }
                 else {
                   server.cleanRooms();
-                  // Now that we have all data from the client, we process it
-                  console.log("Received data: " + body);
-                  // Split the key / pair values and print them out
-                  var obj = {};
-                  var vars = body.split("&");
-                  for (var t = 0; t < vars.length; t++)
-                  {
-                      var pair = vars[t].split("=");
-                      var key = decodeURIComponent(pair[0]);
-                      var val = decodeURIComponent(pair[1]);
-                      obj[key] = val;
-                      console.log(key + ":" + val);
+                  if (obj.roomName in rooms) {
+                    res.writeHead(403,"Room name taken",{"Content-Type": "text/plain"});
+                    res.end("ROOM TAKEN");
+                  } else {
+                    obj.heartbeat = +new Date();
+                    rooms[obj.roomName] = obj;
+                    jsonFile.writeFile(file,rooms,function (err) {
+                      if (err) console.log(err);
+                    });
+                    // Tell Unity that we received the data OK
+                    res.writeHead(200, {"Content-Type": "text/plain"});
+                    res.end("OK");
                   }
-
-                  // Tell Unity that we received the data OK
-                  res.writeHead(200, {"Content-Type": "text/plain"});
-                  res.end("OK");
                 }
             });
         }
