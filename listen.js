@@ -3,6 +3,7 @@
 const TIMEOUT = 60 * 1000; // 60 seconds
 var http = require("http");
 const file = "rooms.json";
+var url = require("url");
 var myip = require('quick-local-ip');
 var jsonFile = require("jsonfile");
 var rooms = jsonFile.readFile(file,function (err) {
@@ -52,6 +53,8 @@ class Server
         // We are only supporting POST
         if (req.method === "POST")
         {
+            const parsedUrl = url.parse(req.url);
+            let pathName = `.${parsedUrl.pathname}`;
             // Post data may be sent in chunks so need to build it up
             var body = "";
             req.on("data", (data) =>
@@ -67,24 +70,32 @@ class Server
             });
             req.on("end", () =>
             {
-                server.cleanRooms();
-                // Now that we have all data from the client, we process it
-                console.log("Received data: " + body);
-                // Split the key / pair values and print them out
-                var obj = {};
-                var vars = body.split("&");
-                for (var t = 0; t < vars.length; t++)
-                {
-                    var pair = vars[t].split("=");
-                    var key = decodeURIComponent(pair[0]);
-                    var val = decodeURIComponent(pair[1]);
-                    obj[key] = val;
-                    console.log(key + ":" + val);
+                if (pathName == "/heartbeat") {
+                  console.log("received heartbeat for room " + obj.roomName);
+                  if (obj.roomName in rooms) {
+                    rooms[obj.roomName].heartbeat = +new Date();
+                  }
                 }
+                else {
+                  server.cleanRooms();
+                  // Now that we have all data from the client, we process it
+                  console.log("Received data: " + body);
+                  // Split the key / pair values and print them out
+                  var obj = {};
+                  var vars = body.split("&");
+                  for (var t = 0; t < vars.length; t++)
+                  {
+                      var pair = vars[t].split("=");
+                      var key = decodeURIComponent(pair[0]);
+                      var val = decodeURIComponent(pair[1]);
+                      obj[key] = val;
+                      console.log(key + ":" + val);
+                  }
 
-                // Tell Unity that we received the data OK
-                res.writeHead(200, {"Content-Type": "text/plain"});
-                res.end("OK");
+                  // Tell Unity that we received the data OK
+                  res.writeHead(200, {"Content-Type": "text/plain"});
+                  res.end("OK");
+                }
             });
         }
         else

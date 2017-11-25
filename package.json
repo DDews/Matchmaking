@@ -7,7 +7,8 @@
     "cors": "^2.8.4",
     "express": "^4.16.2",
     "jsonfile": "^4.0.0",
-    "quick-local-ip": "^1.0.7"
+    "quick-local-ip": "^1.0.7",
+    "url": "^0.11.0"
   },
   "devDependencies": {},
   "scripts": {
