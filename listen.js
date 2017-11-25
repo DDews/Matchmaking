@@ -83,8 +83,10 @@ class Server
                     var pair = vars[t].split("=");
                     var key = decodeURIComponent(pair[0]);
                     var val = decodeURIComponent(pair[1]);
-                    obj[key] = val;
-                    console.log(key + ":" + val);
+                    if (key != "password") {
+                      obj[key] = val;
+                      console.log(key + ":" + val);
+                    }
                 }
                 if (pathName == "/heartbeat") {
                   console.log("received heartbeat for room " + obj.roomName);
