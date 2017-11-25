@@ -3,7 +3,7 @@ const app = express()
 const cors = require('cors')
 const port = 8080
 const TIMEOUT = 60 * 1000; // 60 seconds
-var jsonFile = require('jsonFile')
+var jsonFile = require('jsonfile')
 var bodyParser = require('body-parser');
 var file = "./rooms.json"
 
@@ -27,7 +27,11 @@ function cleanRooms() {
 }
 app.post('/', (request, response) => {
   cleanRooms();
-  response.send(JSON.stringify(rooms));
+  var out = [];
+  for (var room in rooms) {
+    out.push(room);
+  }
+  response.send(JSON.stringify(out));
 })
 app.post('/api/createMatch', function(req, res) {
     cleanRooms();
