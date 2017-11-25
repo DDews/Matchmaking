@@ -14,7 +14,7 @@ class Server
     cleanRooms() {
       var time = +new Date();
       for (var room in rooms) {
-        if (time - room.heartbeaet > TIMEOUT) delete rooms[room];
+        if (time - rooms[room].heartbeaet > TIMEOUT) delete rooms[room];
       }
     }
     constructor()
