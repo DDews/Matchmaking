@@ -126,11 +126,11 @@ class Server
             var out = [];
             for (var room in rooms) {
               out.push({
-                roomName: room.roomName,
-                guid: room.guid,
-                internalIP: room.internalIP,
-                externalIP: room.externalIP,
-                players: room.players
+                'roomName': room.roomName,
+                'guid': room.guid,
+                'internalIP': room.internalIP,
+                'externalIP': room.externalIP,
+                'players': room.players
               });
             }
             res.end(JSON.stringify(out));
