@@ -107,9 +107,9 @@ class Server
                     }
                   } else {
                     for(var key in keys) {
-                      if (key != "kill" && !(key in obj)) {
-                        res.writeHead(403,"Room name taken",{"Content-Type": "text/plain"});
-                        res.end("ROOM TAKEN");
+                      if (keys[key] != "kill" && !(keys[key] in obj)) {
+                        res.writeHead(403,"Invalid object",{"Content-Type": "text/plain"});
+                        res.end("Invalid object");
                         return;
                       }
                     }
