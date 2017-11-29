@@ -9,6 +9,7 @@ var jsonFile = require("jsonfile");
 var rooms = jsonFile.readFile(file,function (err, obj) {
   console.dir(obj);
 });
+var keys = ["roomName","players","password","guid","externalIP","internalIP","kill"];
 
 class Server
 {
@@ -83,7 +84,7 @@ class Server
                     var pair = vars[t].split("=");
                     var key = decodeURIComponent(pair[0]);
                     var val = decodeURIComponent(pair[1]);
-                    if (key != "password") {
+                    if (keys.indexOf(key) != -1) {
                       obj[key] = val;
                       console.log(key + ":" + val);
                     }
@@ -97,8 +98,12 @@ class Server
                 else {
                   server.cleanRooms();
                   if (obj.roomName in rooms) {
-                    res.writeHead(403,"Room name taken",{"Content-Type": "text/plain"});
-                    res.end("ROOM TAKEN");
+                    if ('kill' in obj && password in rooms[obj.roomName] && obj.password == rooms[obj.roomName].password) {
+                      delete rooms[obj.roomName];
+                    } else {
+                      res.writeHead(403,"Room name taken",{"Content-Type": "text/plain"});
+                      res.end("ROOM TAKEN");
+                    }
                   } else {
                     obj.heartbeat = +new Date();
                     rooms[obj.roomName] = obj;
@@ -119,7 +124,13 @@ class Server
             res.writeHead(200, {"Content-Type": "text/plain"});
             var out = [];
             for (var room in rooms) {
-              out.push(rooms[room]);
+              out.push({
+                roomName: room.roomName,
+                guid: room.guid,
+                internalIP: room.internalIP,
+                externalIP: room.externalIP,
+                players: room.players
+              });
             }
             res.end(JSON.stringify(out));
         }
