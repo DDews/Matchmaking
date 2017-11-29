@@ -93,7 +93,7 @@ class Server
                   console.log("received heartbeat for room " + obj.roomName);
                   if (obj.roomName in rooms) {
                     rooms[obj.roomName].heartbeat = +new Date();
-                    if (players in obj) rooms[obj.roomName].players = obj.players;
+                    if ('players' in obj) rooms[obj.roomName].players = obj.players;
                   }
                 }
                 else {
