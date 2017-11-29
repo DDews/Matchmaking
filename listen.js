@@ -99,7 +99,7 @@ class Server
                 else {
                   server.cleanRooms();
                   if (obj.roomName in rooms) {
-                    if ('kill' in obj && password in rooms[obj.roomName] && obj.password == rooms[obj.roomName].password) {
+                    if ('kill' in obj && 'password' in rooms[obj.roomName] && obj.password == rooms[obj.roomName].password) {
                       delete rooms[obj.roomName];
                     } else {
                       res.writeHead(403,"Room name taken",{"Content-Type": "text/plain"});
