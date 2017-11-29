@@ -107,7 +107,7 @@ class Server
                     }
                   } else {
                     for(var key in keys) {
-                      if (!(key in obj)) {
+                      if (key != "kill" && !(key in obj)) {
                         res.writeHead(403,"Room name taken",{"Content-Type": "text/plain"});
                         res.end("ROOM TAKEN");
                         return;
