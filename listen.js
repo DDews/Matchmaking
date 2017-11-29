@@ -103,8 +103,16 @@ class Server
                     } else {
                       res.writeHead(403,"Room name taken",{"Content-Type": "text/plain"});
                       res.end("ROOM TAKEN");
+                      return;
                     }
                   } else {
+                    for(var key in keys) {
+                      if (!(key in obj)) {
+                        res.writeHead(403,"Room name taken",{"Content-Type": "text/plain"});
+                        res.end("ROOM TAKEN");
+                        return;
+                      }
+                    }
                     obj.heartbeat = +new Date();
                     rooms[obj.roomName] = obj;
                     jsonFile.writeFile(file,rooms,function (err) {
